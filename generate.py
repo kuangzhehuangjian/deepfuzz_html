@@ -12,6 +12,14 @@ import random
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--seed_dir', default='./seed', help='html files seed path')
+parser.add_argument('--max_num_line', type=int, default=5, help='number of html tags to add by deepfuzz')
+parser.add_argument('--num_seed', type=int, default=100, help='number of html files (seed) for deepfuzz')
+
+FLAGS = parser.parse_args()
 
 
 latent_dim = 512  # Latent dimensionality of the encoding space.
@@ -22,11 +30,10 @@ data_path = 'pair_len_150.txt'
 # maxlen = 50
 maxlen = 150
 MAXLEN = maxlen
-# to change:
-# seed_path = './gcc/gcc/testsuite'
-seed_path = './seed'
-# to change:
-max_num_line = 5
+
+seed_path = FLAGS.seed_dir
+max_num_line = FLAGS.max_num_line
+num_seed = FLAGS.num_seed
 
 
 # # Vectorize the data.
@@ -370,6 +377,7 @@ def generate():
     total_count = 0
     syntax_valid_count = 0
     files = []
+    num = 1
     for root, d_names, f_names in os.walk(seed_path):
         for f in f_names:
             files.append(os.path.join(root, f))
@@ -423,6 +431,9 @@ def generate():
             syntax_valid_count += 1
         except:
             continue
+        num += 1
+        if num > num_seed:
+            break 
     pass_rate = syntax_valid_count / total_count
     print('syntax_valid_count: %d' % (syntax_valid_count))
     print('total_count: %d' % (total_count))
