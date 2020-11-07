@@ -16,6 +16,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--seed_dir', default='./seed', help='html files seed path')
+parser.add_argument('--save_dir', default='./seed', help='path to store new html files')
 parser.add_argument('--max_num_line', type=int, default=5, help='number of html tags to add by deepfuzz')
 parser.add_argument('--num_seed', type=int, default=100, help='number of html files (seed) for deepfuzz')
 
@@ -32,6 +33,7 @@ maxlen = 150
 MAXLEN = maxlen
 
 seed_path = FLAGS.seed_dir
+save_dir = FLAGS.save_dir
 max_num_line = FLAGS.max_num_line
 num_seed = FLAGS.num_seed
 
@@ -409,7 +411,8 @@ def generate():
         # text = open(file, 'r').read()
         try:
             text = open(file, 'r',encoding='utf-8').read() 
-            print(file)
+            print('='*50)
+            print('processing file:',file)
             # text = pp.replace_macro(text, file)
             # text = pp.remove_comment(text)
             text = pp.remove_space(text)
@@ -422,12 +425,13 @@ def generate():
             # assert 0==1
             text = synthesis(text, 'g1', 'samplespace')
             k=random.randint(0,100)
-            file_generate = open(file[:-5] + '_new_' +str(k)+ '.html','w')
+            file_generate = open(save_dir +'/'+ file.split('/')[-1][:-5] + '_new_' +str(k)+ '.html','w')
+            print(save_dir +'/'+ file.split('/')[-1][:-5] + '_new_' +str(k)+ '.html')
             file_generate.write(text)
             file_generate.close()
-            
-            # is_valid = verify_correctness(text, file, 'deepfuzz_g1_nosample')
-            # if (is_valid):
+                
+                # is_valid = verify_correctness(text, file, 'deepfuzz_g1_nosample')
+                # if (is_valid):
             syntax_valid_count += 1
         except:
             continue

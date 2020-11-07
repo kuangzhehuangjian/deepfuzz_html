@@ -1,6 +1,12 @@
 ## DeepFuzz
-
-* run.sh is used to crawl training data from gcc.
-* pre.py is used to prepare training data.
+  
 * train.py is used to train a s2s model.
 * generate.py is used to generate new programs with trained model.
+
+* usage:
+python3 generate.py --seed_dir='./seed' --save_dir='./seed/' --max_num_line'=5 --num_seed=9999999
+
+==>'--seed_dir', default='./seed', help='html files seed path'
+==>'--save_dir', default='./seed', help='path to store new html files'
+==>'--max_num_line', type=int, default=5, help='number of html tags to add to each seed file by deepfuzz'
+==>'--num_seed', type=int, default=100, help='number of html files (seed) for deepfuzz'
