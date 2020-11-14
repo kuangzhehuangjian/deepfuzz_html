@@ -11,7 +11,7 @@ import os
 batch_size = 128  # Batch size for training.
 epochs = 10  # Number of epochs to train for.
 latent_dim = 512  # Latent dimensionality of the encoding space.
-num_samples = 400000  # Number of samples to train on.
+num_samples = 2000000  # Number of samples to train on.
 # Path to the data txt file on disk.
 # data_path = 'pair'
 data_path = 'pair_len_150.txt'
@@ -108,4 +108,4 @@ for iteration in range(1, 5):
     model_json = model.to_json()
     with open(str(iteration)+"model.json", "w") as outfile:
         json.dump(model_json, outfile)
-    model.save_weights(str(iteration)+"model.h5")
+    model.save_weights(str(iteration)+"model_200.h5")
